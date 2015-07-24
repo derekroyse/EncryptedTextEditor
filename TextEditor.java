@@ -4,6 +4,7 @@ import java.awt.GridLayout;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class TextEditor extends JPanel{
 
 	private static void createAndShowGUI() {

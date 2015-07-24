@@ -1,15 +1,11 @@
 package textEditor;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-
+import java.io.*;
+import java.security.*;
 import javax.crypto.*;
 import javax.crypto.spec.*;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import java.util.Base64;
 
@@ -38,9 +34,30 @@ public class Writer{
 			}
 		}
 		
-		public static void encrypt(String content) throws IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IOException{
-			// ask for keyword			
-			String input = "thisIsASecretKey";
+		public static void encrypt(String content) throws IllegalBlockSizeException, 
+			BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IOException{
+			String input = null;
+			
+			// ask for keyword		
+			input = (String)JOptionPane.showInputDialog("Enter a 16 character keyword for encryption: ");
+			if (input == null){
+					input = "test";
+				}
+			
+			while (input.length() != 16){
+				input = (String)JOptionPane.showInputDialog("Invalid keyword. Please enter a 16 character keyword: ");
+ 				if (input == null){
+ 					break;
+ 				}
+			}
+			
+ 			// if the user cancelled
+			if (input == null){
+					JOptionPane.showConfirmDialog(null, "No keyword? Please try again without encrpyting.");
+					return;
+				}						
+
+			//String input = "thisIsASecretKey";
 			byte[] keyword = input.getBytes("utf-8");
 			
 			// Create a key with keyword
@@ -56,15 +73,5 @@ public class Writer{
 			// pass encrypted content to save method
 			// which will write it to a file
 			save(encryptedData);
-			
-			// Decryption test
-				// Create a key with keyword			
-			    Key key2 = new SecretKeySpec(keyword, "AES");
-			    Cipher c = Cipher.getInstance("AES");
-			    c.init(Cipher.DECRYPT_MODE, key2);			    
-			    // Decrypt with key			    
-			    byte[] decoded = Base64.getDecoder().decode(encryptedData);
-			    byte[] decValue = c.doFinal(decoded);
-			    String decryptedValue = new String(decValue);
 		}
 }

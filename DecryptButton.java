@@ -1,25 +1,14 @@
 package textEditor;
 
 import java.awt.*;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.swing.JButton;
-import javax.swing.JComponent;
- 
-import javax.swing.JTextArea;
-
-import java.awt.Toolkit;
-import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.*;
+import javax.crypto.*;
+import java.awt.event.*;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+@SuppressWarnings("serial")
 public class DecryptButton extends JPanel implements ActionListener { 
 	JButton button;
 	 JTextArea textData;

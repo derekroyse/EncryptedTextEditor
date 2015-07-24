@@ -1,25 +1,15 @@
 package textEditor;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
+import java.io.*;
+import java.security.*;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 public class Reader{ 		
 		public static String load() throws IOException{
@@ -55,7 +45,9 @@ public class Reader{
 		}
 		
 		public static String decrypt() throws IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IOException{			
-		    // Open file
+		    String input = "blank";
+			
+			// Open file
 			JFileChooser openFile = new JFileChooser();
             openFile.showOpenDialog(null);	
             openFile.getSelectedFile();            
@@ -63,7 +55,27 @@ public class Reader{
             FileInputStream inputStream = new FileInputStream(file);
             
 			// get keyword
-			String input = "thisIsASecretKey";
+            // ask for keyword
+ 			input = (String)JOptionPane.showInputDialog("Enter your encryption password: ");
+			if (input == null){
+ 					input = "test";
+ 				}
+ 			
+ 			while (input.length() != 16){
+ 				input = (String)JOptionPane.showInputDialog("Invalid keyword. Please enter a 16 character keyword: ");
+ 				if (input == null){
+ 					break;
+ 				}
+ 			}		
+ 			
+ 			// if the user cancelled
+			if (input == null){
+					JOptionPane.showConfirmDialog(null, "No keyword? Please choose another file.");
+					inputStream.close();
+					return null;
+				}
+
+			//String input = "thisIsASecretKey";
 			byte[] keyword = input.getBytes("utf-8");			
 
             // read the file
