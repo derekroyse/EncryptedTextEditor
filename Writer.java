@@ -34,8 +34,7 @@ public class Writer{
 			}
 		}
 		
-		public static void encrypt(String content) throws IllegalBlockSizeException, 
-			BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IOException{
+		public static void encrypt(String content) throws IOException{
 			String input = null;
 			
 			// ask for keyword		
@@ -57,21 +56,32 @@ public class Writer{
 					return;
 				}						
 
-			//String input = "thisIsASecretKey";
-			byte[] keyword = input.getBytes("utf-8");
-			
-			// Create a key with keyword
-			Key key = new SecretKeySpec(keyword, "AES");
-			Cipher cipher = Cipher.getInstance("AES");
-			cipher.init(Cipher.ENCRYPT_MODE, key);
-			
-			// Encrypt with key
-			byte[] contentBytes = content.getBytes("utf-8");
-			byte[] encryptedData = cipher.doFinal(contentBytes);
-			encryptedData = Base64.getEncoder().withoutPadding().encode(encryptedData);
-			
-			// pass encrypted content to save method
-			// which will write it to a file
-			save(encryptedData);
+			try{
+				//String input = "thisIsASecretKey";
+				byte[] keyword = input.getBytes("utf-8");
+				
+				// Create a key with keyword
+				Key key = new SecretKeySpec(keyword, "AES");
+				Cipher cipher = Cipher.getInstance("AES");
+				cipher.init(Cipher.ENCRYPT_MODE, key);
+				
+				// Encrypt with key
+				byte[] contentBytes = content.getBytes("utf-8");
+				byte[] encryptedData = cipher.doFinal(contentBytes);
+				encryptedData = Base64.getEncoder().withoutPadding().encode(encryptedData);
+				
+				// pass encrypted content to save method
+				// which will write it to a file
+				save(encryptedData);
+				System.out.write(encryptedData);
+			}
+			catch (IllegalBlockSizeException|BadPaddingException|NoSuchAlgorithmException|NoSuchPaddingException  e){
+				System.out.println("Invalid Encryption Info. Exiting program.");
+				System.exit(1);
+			}
+			catch (InvalidKeyException e){
+				System.out.println("Invalid Key Exception. Exiting program.");
+				System.exit(1);
+			}
 		}
 }

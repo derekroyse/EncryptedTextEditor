@@ -44,8 +44,9 @@ public class Reader{
             
 		}
 		
-		public static String decrypt() throws IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IOException{			
+		public static String decrypt() throws IOException{			
 		    String input = "blank";
+		    String returnString = "";
 			
 			// Open file
 			JFileChooser openFile = new JFileChooser();
@@ -75,25 +76,39 @@ public class Reader{
 					return null;
 				}
 
-			//String input = "thisIsASecretKey";
-			byte[] keyword = input.getBytes("utf-8");			
-
-            // read the file
-			byte[] contentBytes =  new byte[(int)file.length()];
-		    inputStream.read(contentBytes);    
-        	
-		    // Decryption
-				// Create a key with keyword
-			    Key key = new SecretKeySpec(keyword, "AES");
-			    Cipher c = Cipher.getInstance("AES");
-			    c.init(Cipher.DECRYPT_MODE, key);		    
-		    	// Decrypt with key		
-	   		   	byte[] decoded = Base64.getDecoder().decode(contentBytes);
-	   		    byte[] decValue = c.doFinal(decoded);
-	   		    String decryptedValue = new String(decValue);
+			try {
+				//String input = "thisIsASecretKey";
+				byte[] keyword = input.getBytes("utf-8");			
+	
+	            // read the file
+				byte[] contentBytes =  new byte[(int)file.length()];
+			    inputStream.read(contentBytes);			    
+	        	
+			    // Decryption
+					// Create a key with keyword
+				    Key key = new SecretKeySpec(keyword, "AES");
+				    Cipher c = Cipher.getInstance("AES");
+				    c.init(Cipher.DECRYPT_MODE, key);		    
+			    	// Decrypt with key		
+		   		   	byte[] decoded = Base64.getDecoder().decode(contentBytes);
+		   		    byte[] decValue = c.doFinal(decoded);
+		   		    String decryptedValue = new String(decValue);
+		   		    returnString = decryptedValue;
+			}
+	   		catch (IllegalBlockSizeException|NoSuchAlgorithmException|NoSuchPaddingException e){
+				System.out.println("Invalid Encryption Info. Exiting program.");
+				System.exit(1);
+	   		}
+			catch (BadPaddingException e){
+				JOptionPane.showConfirmDialog(null, "Invalid Keyword.");
+			}
+			catch (InvalidKeyException e){
+				System.out.println("Invalid Key Exception. Exiting program.");
+				System.exit(1);
+			}
 	   		    
 	        // Close the BufferedReader	            
 	   		inputStream.close();	            
-	   		return decryptedValue;
+	   		return returnString;
 		}
 }

@@ -2,11 +2,8 @@ package textEditor;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.crypto.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 @SuppressWarnings("serial")
 public class DecryptButton extends JPanel implements ActionListener { 
@@ -25,7 +22,7 @@ public class DecryptButton extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
     	try {
     		textData.setText(Reader.decrypt());
-		} catch (IOException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | NoSuchPaddingException e1) {
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
