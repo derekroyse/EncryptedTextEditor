@@ -1,30 +1,48 @@
 package textEditor;
 
-import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
 
+/**
+ * This class implements a JMenuItem that allows
+ * users to load and decrypt encrypted text files.
+ * 
+ * @author	Derek Royse
+ * @version	1.0
+ * @since	2015-08-05
+ * @see		JMenuItem
+ */
 @SuppressWarnings("serial")
-public class DecryptButton extends JPanel implements ActionListener { 
-	JButton button;
-	 JTextArea textData;
-	 
+public class DecryptButton extends JMenuItem implements ActionListener { 
+	JTextArea textData;
+	
+   /**
+   * Simple JMenuItem with an action listener that allows the user
+   * to decrypt a decrypted file.
+   * 
+   * @param textArea 	the JTextArea from the GUI
+   * @see				JMenuItem
+   */ 
     public DecryptButton(JTextArea textArea) {    	
-        super(new BorderLayout());
         textData = textArea;
-        button = new JButton("Decrypt");
-        //button.setPreferredSize(new Dimension(200, 80));
-        add(button, BorderLayout.CENTER);
-        button.addActionListener(this);
+        this.setText("Decrypt");
+        this.addActionListener(this);
     }
- 
+    
+	/**
+	 * Action listener that calls the Reader.decrypt method and
+	 * sets the text in the program's JTextArea to the String
+	 * that it returns.
+	 * 
+	 * @throws	IOException on input error
+	 * @see 	IOException
+	 */ 
     public void actionPerformed(ActionEvent e) {
     	try {
     		textData.setText(Reader.decrypt());
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			new SimpleConfirm("No file selected.");
 		}
     }
 }

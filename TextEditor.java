@@ -1,29 +1,32 @@
 package textEditor;
 
 import java.awt.GridLayout;
-
 import javax.swing.*;
 
-@SuppressWarnings("serial")
-public class TextEditor extends JPanel{
+/**
+ * This program allows users to save, load,
+ * encrypt, and decrypt files with AES encryption.
+ * 
+ * @author	Derek Royse
+ * @version	1.0
+ * @since	2015-08-05
+ */
 
+public class TextEditor{
+   /**
+   * Starts the textEditor program by creating and showing the Swing 
+   * GUI on the screen.
+   */
 	private static void createAndShowGUI() {
         // Window setup
         JFrame frame = new JFrame("Simple Text Editor");
         JPanel panel = new JPanel(new GridLayout(1, 2));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         
-        // Menu Setup
-        JMenuBar menuBar;
-        JMenu menu;
-        
-
-        //Create the menu bar.
-        menuBar = new JMenuBar();
-
-        //Build the first menu.
-        menu = new JMenu("File");
-        menuBar.add(menu);
+        // Menu setup
+        JMenu menu = new JMenu("File");        
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(menu);        
         
         // Text Area
         JTextArea textArea = new JTextArea(20, 50);
@@ -31,22 +34,15 @@ public class TextEditor extends JPanel{
         JScrollPane scrollPane = new JScrollPane(textArea);
         panel.add(scrollPane);
         
-        // Save Menu Option
+        // Menu options
         SaveButton save = new SaveButton(textArea);
         menu.add(save);
-        
-        // Load Menu Option
         LoadButton load = new LoadButton(textArea);
         menu.add(load);
-        
-        // Encrypt Menu Option
         EncryptButton encrypt = new EncryptButton(textArea);
         menu.add(encrypt);
-        
-        // Decrypt Menu Option
         DecryptButton decrypt = new DecryptButton(textArea);
-        menu.add(decrypt);
-        
+        menu.add(decrypt);        
  
         //Display the window.
         frame.setJMenuBar(menuBar);
@@ -54,9 +50,13 @@ public class TextEditor extends JPanel{
         frame.pack();
         frame.setVisible(true); 
     }	
-
-	public static void main(String[] args) {		
-        //Schedule a job for the event-dispatching thread
+	
+   /**
+   * This is the main method which simply runs the createAndShowGUI() method.
+   * 
+   * @param args 	unused
+   */
+	public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
